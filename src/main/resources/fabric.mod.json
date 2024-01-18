@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "player-recorder",
+  "version": "${version}",
+  "name": "Player Recorder",
+  "description": "A mod to record player actions",
+  "authors": [
+    "jtljac"
+  ],
+  "contact": {
+    "website": "datdeveloper.com",
+    "repo": "https://github.com/jacob/player-recorderayer-recorder"
+  },
+  "license": "MIT",
+  "icon": "assets/player-recorder/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.datdeveloper.playerrecorder.PlayerRecorder"
+    ]
+  },
+  "mixins": [
+    "player-recorder.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

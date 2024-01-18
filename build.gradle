@@ -65,7 +65,11 @@ jar {
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}"}
     }
+
+    finalizedBy(remapJar)
 }
+
+sourcesJar.finalizedBy(remapSourcesJar)
 
 // configure the maven publication
 publishing {

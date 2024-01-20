@@ -42,7 +42,7 @@ public class PlayerRecorder implements ModInitializer {
             try {
                 if (!Files.exists(savePath)) Files.createDirectories(savePath);
                 eventStore = new FileEventStore(savePath);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LOGGER.error("Failed to setup file eventStore: {}", savePath);
             }
         });
@@ -69,8 +69,8 @@ public class PlayerRecorder implements ModInitializer {
      * @param sender The packet sender
      * @param server An instance of the server
      */
-    private void onPlayerJoin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
-        ServerPlayerEntity player = handler.getPlayer();
+    private void onPlayerJoin(final ServerPlayNetworkHandler handler, final PacketSender sender, final MinecraftServer server) {
+        final ServerPlayerEntity player = handler.getPlayer();
         eventStore.appendEventWithPosDim(player.getUuid(),
                 TrackedEvents.JOIN,
                 "",
@@ -83,8 +83,8 @@ public class PlayerRecorder implements ModInitializer {
      * @param handler The network handler for the player
      * @param server An instance of the server
      */
-    private void onPlayerDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
-        ServerPlayerEntity player = handler.getPlayer();
+    private void onPlayerDisconnect(final ServerPlayNetworkHandler handler, final MinecraftServer server) {
+        final ServerPlayerEntity player = handler.getPlayer();
         eventStore.appendEventWithPosition(player.getUuid(),
                 TrackedEvents.LEAVE,
                 "",
@@ -96,8 +96,8 @@ public class PlayerRecorder implements ModInitializer {
      * @param entity The entity that died
      * @param damageSource The source that killed the entity
      */
-    private void afterDeath(LivingEntity entity, DamageSource damageSource) {
-        if (entity instanceof ServerPlayerEntity player) {
+    private void afterDeath(final LivingEntity entity, final DamageSource damageSource) {
+        if (entity instanceof final ServerPlayerEntity player) {
             eventStore.appendEventWithPosition(player.getUuid(),
                     TrackedEvents.DEATH,
                     "",
@@ -111,7 +111,7 @@ public class PlayerRecorder implements ModInitializer {
      * @param newPlayer The new instance of the player
      * @param alive Whether the player is alive
      */
-    private void afterRespawn(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, boolean alive) {
+    private void afterRespawn(final ServerPlayerEntity oldPlayer, final ServerPlayerEntity newPlayer, final boolean alive) {
         eventStore.appendEventWithPosDim(newPlayer.getUuid(),
                 TrackedEvents.RESPAWN,
                 "",
@@ -123,11 +123,11 @@ public class PlayerRecorder implements ModInitializer {
      * Event fired every tick
      * @param server An instance of the server
      */
-    private void onTick(MinecraftServer server) {
+    private void onTick(final MinecraftServer server) {
         // Every Minute store players
         if (server.getTicks() % 1200 == 0) {
-            Instant now = Instant.now();
-            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+            final Instant now = Instant.now();
+            for (final ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
                 eventStore.appendEvent(now,
                         player.getUuid(),
                         TrackedEvents.POSITION,
@@ -145,7 +145,7 @@ public class PlayerRecorder implements ModInitializer {
      * @param origin The world the player started in
      * @param destination The world the player goes to
      */
-    private void afterChangeWorld(ServerPlayerEntity player, ServerWorld origin, ServerWorld destination) {
+    private void afterChangeWorld(final ServerPlayerEntity player, final ServerWorld origin, final ServerWorld destination) {
         eventStore.appendEventWithPosition(player.getUuid(),
                 TrackedEvents.DIMENSION,
                 destination.getDimensionKey().getValue().toString(),
@@ -161,7 +161,7 @@ public class PlayerRecorder implements ModInitializer {
      * @param z The z coord
      * @return A packed string representing the given coordinates
      */
-    private String packPositionString(int x, int y, int z) {
+    private String packPositionString(final int x, final int y, final int z) {
         return "x" + x + "y" + y + "z" + z;
     }
 
@@ -170,7 +170,7 @@ public class PlayerRecorder implements ModInitializer {
      * @param pos The position
      * @return A packed string representing the given coordinates
      */
-    private String packPositionString(BlockPos pos) {
+    private String packPositionString(final BlockPos pos) {
         return packPositionString(pos.getX(), pos.getY(), pos.getZ());
     }
 }

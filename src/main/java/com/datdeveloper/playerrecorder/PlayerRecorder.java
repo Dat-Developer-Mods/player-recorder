@@ -100,7 +100,7 @@ public class PlayerRecorder implements ModInitializer {
         if (entity instanceof final ServerPlayerEntity player) {
             eventStore.appendEventWithPosition(player.getUuid(),
                     TrackedEvents.DEATH,
-                    "",
+                    packDeathReason(player, damageSource),
                     packPositionString(player.getBlockPos()));
         }
     }
@@ -172,5 +172,32 @@ public class PlayerRecorder implements ModInitializer {
      */
     private String packPositionString(final BlockPos pos) {
         return packPositionString(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    /**
+     * Utility method to
+     * @param player The player that was killed
+     * @param source The damage source that killed the player
+     * @return A packed string representing the
+     */
+    private String packDeathReason(final ServerPlayerEntity player, final DamageSource source) {
+        final String msg = "death.attack." + source.getType().msgId();
+
+        // The player wasn't directly killed
+        if (source.getAttacker() == null && source.getSource() == null) {
+            // The player's death was caused by an entity (E.g. hit off a cliff)
+            final LivingEntity attacker = player.getPrimeAdversary();
+            if (attacker != null) return msg + ".player " + attacker.getDisplayName().getString();
+
+            return msg;
+        }
+
+        // An entity killed the player (E.g. hit them with a sword)
+        final String attacker = (source.getAttacker() == null
+                ? source.getSource().getDisplayName()
+                : source.getAttacker().getDisplayName())
+                .getString();
+
+        return msg + " " + attacker;
     }
 }

@@ -162,7 +162,8 @@ public class PlayerRecorder implements ModInitializer {
      * @return A packed string representing the given coordinates
      */
     private String packPositionString(final int x, final int y, final int z) {
-        return "x" + x + "y" + y + "z" + z;
+        // Gotta have at least one `String.valueOf` otherwise it just integer adds them together
+        return String.valueOf(x) + y + z;
     }
 
     /**

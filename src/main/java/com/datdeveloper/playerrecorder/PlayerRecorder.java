@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.entity.LivingEntity;
@@ -162,8 +163,7 @@ public class PlayerRecorder implements ModInitializer {
      * @return A packed string representing the given coordinates
      */
     private String packPositionString(final int x, final int y, final int z) {
-        // Gotta have at least one `String.valueOf` otherwise it just integer adds them together
-        return String.valueOf(x) + y + z;
+        return x + " " + y + " " + z;
     }
 
     /**
